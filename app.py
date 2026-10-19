@@ -130,6 +130,35 @@ async def upload_custom_avatar(
             os.remove(temp_upload_path)
         raise HTTPException(status_code=400, detail=f"Failed to process portrait image: {str(e)}")
 
+@app.post("/api/upload-video-avatar")
+async def upload_custom_video_avatar(
+    name: str = Form(...),
+    file: UploadFile = File(...)
+):
+    unique_id = "video_" + str(uuid.uuid4())[:8]
+    ext = os.path.splitext(file.filename)[1] or ".mp4"
+    temp_upload_path = os.path.join(OUTPUT_DIR, f"temp_{unique_id}{ext}")
+
+    with open(temp_upload_path, "wb") as buffer:
+        shutil.copyfileobj(file.file, buffer)
+
+    try:
+        meta = asset_factory.process_video_avatar(temp_upload_path, unique_id, name)
+        if os.path.exists(temp_upload_path):
+            os.remove(temp_upload_path)
+        return {
+            "status": "success",
+            "avatar": {
+                "id": meta["id"],
+                "name": meta["name"],
+                "preview_url": f"/static/assets/avatars/{meta['id']}/base.png"
+            }
+        }
+    except Exception as e:
+        if os.path.exists(temp_upload_path):
+            os.remove(temp_upload_path)
+        raise HTTPException(status_code=400, detail=f"Failed to process video avatar: {str(e)}")
+
 @app.post("/api/generate")
 def generate_video(req: GenerateRequest):
     start_time = time.time()

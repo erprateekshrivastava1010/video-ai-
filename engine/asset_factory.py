@@ -432,6 +432,49 @@ class AssetFactory:
 
         return meta
 
+    def process_video_avatar(self, uploaded_video_path: str, avatar_id: str, avatar_name: str):
+        """
+        Samples reference frames from an uploaded short video (MP4/MOV/WebM),
+        extracts the sharpest, clearest frontal face frame, and rigs it into a custom avatar!
+        """
+        cap = cv2.VideoCapture(uploaded_video_path)
+        if not cap.isOpened():
+            raise ValueError("Unable to open video file.")
+
+        best_frame = None
+        best_score = -1.0
+        frame_idx = 0
+
+        while True:
+            ret, frame = cap.read()
+            if not ret or frame_idx > 300:  # sample up to 10 seconds
+                break
+
+            if frame_idx % 5 == 0:
+                gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+                faces = self.face_cascade.detectMultiScale(gray, 1.1, 4)
+                if len(faces) > 0:
+                    fx, fy, fw, fh = max(faces, key=lambda b: b[2] * b[3])
+                    face_roi = gray[fy:fy + fh, fx:fx + fw]
+                    sharpness = cv2.Laplacian(face_roi, cv2.CV_64F).var()
+                    score = (fw * fh) * 0.4 + sharpness * 0.6
+                    if score > best_score:
+                        best_score = score
+                        best_frame = frame.copy()
+            frame_idx += 1
+
+        cap.release()
+
+        if best_frame is None:
+            raise ValueError("No clear frontal face detected in the uploaded video.")
+
+        temp_img_path = os.path.join(self.avatars_dir, f"{avatar_id}_frame.png")
+        cv2.imwrite(temp_img_path, best_frame)
+        meta = self.process_custom_avatar(temp_img_path, avatar_id, avatar_name)
+        if os.path.exists(temp_img_path):
+            os.remove(temp_img_path)
+        return meta
+
     def list_avatars(self):
         """Returns catalogue of all installed avatars."""
         import json

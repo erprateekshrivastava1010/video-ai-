@@ -223,19 +223,52 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // 5. Upload Custom Portrait
+  // 5. Upload Custom Portrait or Short Video
   avatarFileInput.addEventListener('change', async (e) => {
     const file = e.target.files[0];
     if (!file) return;
 
+    const isVideo = file.type.startsWith('video') || Boolean(file.name.match(/\.(mp4|mov|webm|m4v)$/i));
+    const defaultName = isVideo ? 'My Video Avatar' : 'My Portrait';
+    const name = prompt(`Enter a name for this ${isVideo ? 'video avatar' : 'custom avatar'}:`, defaultName) || defaultName;
+
     if (isGitHubPages) {
-      // Client-side instant preview
+      if (isVideo) {
+        // Extract keyframe from user's video directly in the browser!
+        const tempVideo = document.createElement('video');
+        tempVideo.src = URL.createObjectURL(file);
+        tempVideo.muted = true;
+        tempVideo.playsInline = true;
+        tempVideo.currentTime = 1.0;
+
+        tempVideo.onseeked = () => {
+          const canvas = document.createElement('canvas');
+          canvas.width = tempVideo.videoWidth || 720;
+          canvas.height = tempVideo.videoHeight || 960;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(tempVideo, 0, 0, canvas.width, canvas.height);
+          const dataUrl = canvas.toDataURL('image/png');
+
+          const customId = 'video_' + Date.now();
+          STATIC_AVATARS.unshift({
+            id: customId,
+            name: name,
+            preview_url: dataUrl
+          });
+          selectedAvatarId = customId;
+          loadAvatars();
+          alert(`Successfully created avatar from your video: "${name}"! You can now use it to generate videos.`);
+        };
+        return;
+      }
+
+      // Image upload directly in browser
       const reader = new FileReader();
       reader.onload = (re) => {
         const customId = 'custom_' + Date.now();
         STATIC_AVATARS.unshift({
           id: customId,
-          name: 'My Portrait',
+          name: name,
           preview_url: re.target.result
         });
         selectedAvatarId = customId;
@@ -245,13 +278,14 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
 
-    const name = prompt('Enter a name for this custom avatar:', 'My Avatar') || 'Custom Persona';
+    // Local Backend API
     const formData = new FormData();
     formData.append('name', name);
     formData.append('file', file);
+    const endpoint = isVideo ? '/api/upload-video-avatar' : '/api/upload-avatar';
 
     try {
-      const res = await fetch('/api/upload-avatar', {
+      const res = await fetch(endpoint, {
         method: 'POST',
         body: formData
       });
@@ -259,11 +293,12 @@ document.addEventListener('DOMContentLoaded', () => {
       if (data.status === 'success') {
         selectedAvatarId = data.avatar.id;
         await loadAvatars();
+        alert(`Avatar created successfully: ${name}`);
       } else {
-        alert(data.detail || 'Failed to process custom portrait.');
+        alert(data.detail || 'Failed to process custom video/image.');
       }
     } catch (err) {
-      alert('Error uploading portrait: ' + err.message);
+      alert('Error uploading avatar: ' + err.message);
     }
   });
 
