@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HeyGen Local Studio • AI Video & Avatar Generator</title>
+  <link rel="stylesheet" href="./static/css/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Header -->
+    <header class="app-header">
+      <div class="brand">
+        <div class="logo-mark">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <path d="M12 2L2 7L12 12L22 7L12 2Z" fill="url(#brand-grad)" />
+            <path d="M2 17L12 22L22 17" stroke="url(#brand-grad)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
+            <path d="M2 12L12 17L22 12" stroke="url(#brand-grad)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
+            <defs>
+              <linearGradient id="brand-grad" x1="2" y1="2" x2="22" y2="22" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#38bdf8"/>
+                <stop offset="0.5" stop-color="#818cf8"/>
+                <stop offset="1" stop-color="#c084fc"/>
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+        <div class="brand-text">
+          <h1>HeyGen <span>Local Studio</span></h1>
+          <p class="tagline">Audio-Driven Avatar & Kinematic Gesture Engine • Live 24/7</p>
+        </div>
+      </div>
+
+      <div class="header-actions">
+        <div class="status-pill">
+          <span class="status-dot"></span>
+          <span id="engine-status-text">Live 24/7 Web Studio Active</span>
+        </div>
+        <button id="btn-principles" class="secondary-btn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+          HeyGen Principles
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Workspace -->
+    <main class="studio-workspace">
+      <!-- Left Column: Script & Synthesis Controls -->
+      <section class="panel editor-panel">
+        <div class="panel-header">
+          <h2>1. Video Script & Speech</h2>
+          <span id="script-counter" class="counter-badge">0 words • ~0s</span>
+        </div>
+
+        <div class="script-input-container">
+          <textarea id="script-text" placeholder="Type or paste your video script here...&#10;Example: Hello! Welcome to HeyGen Local Studio. Today, we are creating photorealistic video avatars with real-time lip-sync, micro-expressions, and natural hand gestures driven purely by acoustic speech."></textarea>
+        </div>
+
+        <div class="controls-grid">
+          <div class="control-group">
+            <label for="voice-select">Voice & Persona</label>
+            <div class="voice-row">
+              <select id="voice-select"></select>
+              <button id="btn-preview-audio" class="mini-btn" title="Preview Voice Audio">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
+                Preview
+              </button>
+            </div>
+            <audio id="audio-player" style="display:none;"></audio>
+          </div>
+
+          <div class="control-group">
+            <label for="emotion-select">Facial Emotion</label>
+            <select id="emotion-select">
+              <option value="warm" selected>Warm & Friendly (Subtle Smile)</option>
+              <option value="enthusiastic">Enthusiastic (Dynamic Brow & Smile)</option>
+              <option value="professional">Corporate & Professional (Balanced)</option>
+              <option value="thoughtful">Thoughtful & Analytical</option>
+              <option value="neutral">Neutral & Direct</option>
+            </select>
+          </div>
+
+          <div class="control-group">
+            <label for="gesture-mode">Hand Gesture Engine</label>
+            <select id="gesture-mode">
+              <option value="auto" selected>Auto (Acoustic Prosody Driven)</option>
+              <option value="dynamic">Dynamic Keynote (Frequent)</option>
+              <option value="presentation">Presentation (Structured Framing)</option>
+              <option value="subtle">Subtle Presenter (Occasional)</option>
+              <option value="off">Off (Resting Posture)</option>
+            </select>
+          </div>
+
+          <div class="control-group">
+            <label for="gesture-intensity">
+              <span>Gesture Intensity</span>
+              <span id="intensity-val">1.0x</span>
+            </label>
+            <input type="range" id="gesture-intensity" min="0.5" max="1.5" step="0.1" value="1.0">
+          </div>
+
+          <div class="control-group">
+            <label for="resolution-select">Aspect Ratio</label>
+            <select id="resolution-select">
+              <option value="1280x720" selected>16:9 Landscape (YouTube / Presentation)</option>
+              <option value="720x1280">9:16 Portrait (Reels / TikTok / Shorts)</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Micro-Moments Feature Chips -->
+        <div class="feature-tags">
+          <span class="tag">⚡ Phoneme-to-Viseme Lip Sync</span>
+          <span class="tag">👁️ Natural Poisson Eye-Blinks</span>
+          <span class="tag">🎯 Gaze Saccades</span>
+          <span class="tag">🗣️ Pitch-Synchronous Eyebrows</span>
+          <span class="tag">🙌 Articulated Hand Kinematics</span>
+        </div>
+
+        <button id="btn-generate" class="primary-btn">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          <span>Generate AI Video with Gestures</span>
+        </button>
+
+        <div id="progress-container" class="progress-box" style="display:none;">
+          <div class="progress-header">
+            <span id="progress-status">Synthesizing audio & motion frames...</span>
+            <span id="progress-percent">0%</span>
+          </div>
+          <div class="progress-bar">
+            <div id="progress-fill" class="progress-fill"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Right Column: Avatar, Background & Video Player -->
+      <section class="panel preview-panel">
+        <!-- Video Player Window -->
+        <div class="player-wrapper">
+          <div id="player-placeholder" class="player-placeholder" style="display:none;">
+            <div class="placeholder-icon">
+              <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="20" height="20" rx="4"/><polygon points="10 8 16 12 10 16 10 8"/></svg>
+            </div>
+            <h3>Video Output Preview</h3>
+            <p>Select your avatar and background below, enter your script, and click Generate.</p>
+          </div>
+          <video id="output-video" controls playsinline src="./static/assets/demo.mp4"></video>
+          <!-- Live Interactive Canvas Simulator -->
+          <canvas id="live-avatar-canvas" width="1280" height="720" style="display:none; width: 100%; height: 100%; object-fit: contain;"></canvas>
+        </div>
+
+        <!-- Telemetry & Download Bar -->
+        <div id="telemetry-bar" class="telemetry-bar">
+          <div class="telemetry-item">
+            <span class="lbl">Duration</span>
+            <span id="tel-duration" class="val">6.5s</span>
+          </div>
+          <div class="telemetry-item">
+            <span class="lbl">Frames</span>
+            <span id="tel-frames" class="val">195</span>
+          </div>
+          <div class="telemetry-item">
+            <span class="lbl">Render Time</span>
+            <span id="tel-time" class="val">8.9s</span>
+          </div>
+          <div class="telemetry-item">
+            <span class="lbl">FPS</span>
+            <span id="tel-stress" class="val">30.0</span>
+          </div>
+          <a id="btn-download" class="download-btn" href="./static/assets/demo.mp4" download="heygen_avatar_video.mp4">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Download Demo MP4
+          </a>
+        </div>
+
+        <!-- Avatar Selection -->
+        <div class="assets-selector">
+          <div class="section-title-row">
+            <h3>2. Choose Avatar</h3>
+            <label class="upload-link" for="avatar-file-input">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+              Upload Custom Photo
+            </label>
+            <input type="file" id="avatar-file-input" accept="image/*" style="display:none;">
+          </div>
+          <div id="avatar-grid" class="avatar-grid"></div>
+        </div>
+
+        <!-- Background Selection -->
+        <div class="assets-selector">
+          <div class="section-title-row">
+            <h3>3. Choose Studio Background</h3>
+          </div>
+          <div id="background-grid" class="background-grid"></div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Modal: HeyGen AI Technical Principles -->
+    <div id="modal-principles" class="modal-overlay" style="display:none;">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2>Reverse Engineering HeyGen: Architecture & Core Principles</h2>
+          <button id="btn-close-modal" class="close-btn">&times;</button>
+        </div>
+        <div class="modal-body">
+          <div class="principle-card">
+            <h4>1. Text-to-Speech & Acoustic Prosody Decomposition</h4>
+            <p>HeyGen does not generate video directly from raw text. The text is first synthesized into neural audio waveforms. The pipeline extracts:</p>
+            <ul>
+              <li><strong>Phonemes:</strong> Acoustic segments that determine mouth shape (bilabial plosives, fricatives, open/round vowels).</li>
+              <li><strong>Prosody & Pitch (F0):</strong> Fundamental frequency contour and RMS energy envelope. Rising pitch and volume peaks correspond to emphasized words and question cadence.</li>
+            </ul>
+          </div>
+
+          <div class="principle-card">
+            <h4>2. Audio-Driven Lip Sync & Micro-Expressions</h4>
+            <p>Rather than simple 2D image swaps, HeyGen utilizes 3DMM / FLAME / neural mesh deformation:</p>
+            <ul>
+              <li><strong>Viseme Morphing:</strong> Dynamically morphs jaw drop, lip spread (smiling), lip rounding (pucker), and oral cavity depth with spline co-articulation smoothing.</li>
+              <li><strong>Natural Eye Blinking:</strong> Synthesizes non-linear eyelid curves (fast dip, smooth ease-out) timed every 3–4 seconds and snapping to speech pause boundaries.</li>
+              <li><strong>Eyebrow & Gaze Dynamics:</strong> Eyebrows raise 4–8px in response to pitch/volume peaks. Subtle micro-saccades prevent the "dead eyes" uncanny valley.</li>
+            </ul>
+          </div>
+
+          <div class="principle-card">
+            <h4>3. Hand Gestures & Kinematic State Machine</h4>
+            <p>Human conversational gestures are not random; they follow McNeill's gesture dimensions:</p>
+            <ul>
+              <li><strong>Preparation Phase (0.3–0.5s):</strong> Hand ascends smoothly from resting position towards presentation space with cubic easing.</li>
+              <li><strong>Stroke / Apex Phase (0.5–0.8s):</strong> The peak of the gesture locks with the spoken word's acoustic stress peak (open palms, pointing, framing).</li>
+              <li><strong>Retraction Phase (0.4–0.6s):</strong> Smooth recovery back to resting posture or transition to the next beat.</li>
+            </ul>
+          </div>
+
+          <div class="principle-card">
+            <h4>4. Multi-Layer Neural Rendering & Compositing</h4>
+            <p>The compositing engine layers Background &rarr; Torso/Clothing &rarr; Articulated Hands &rarr; Dynamic Face Mesh &rarr; Lighting Alignment &rarr; H.264/AAC MP4 video with frame-accurate synchronization.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="./static/js/app.js"></script>
+</body>
+</html>

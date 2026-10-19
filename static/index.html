@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>HeyGen Local Studio • AI Video & Avatar Generator</title>
-  <link rel="stylesheet" href="/static/css/style.css">
+  <link rel="stylesheet" href="./static/css/style.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -29,15 +29,15 @@
           </svg>
         </div>
         <div class="brand-text">
-          <h1>HeyGen <span>Local</span></h1>
-          <p class="tagline">Audio-Driven Avatar & Kinematic Gesture Engine</p>
+          <h1>HeyGen <span>Local Studio</span></h1>
+          <p class="tagline">Audio-Driven Avatar & Kinematic Gesture Engine • Live 24/7</p>
         </div>
       </div>
 
       <div class="header-actions">
         <div class="status-pill">
           <span class="status-dot"></span>
-          <span>Local Engine Active (0 API Keys Required)</span>
+          <span id="engine-status-text">Live 24/7 Web Studio Active</span>
         </div>
         <button id="btn-principles" class="secondary-btn">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
@@ -56,7 +56,7 @@
         </div>
 
         <div class="script-input-container">
-          <textarea id="script-text" placeholder="Type or paste your video script here...&#10;Example: Hello! Welcome to our local AI avatar studio. Today, we are creating photorealistic video avatars with real-time lip-sync, micro-expressions, and natural hand gestures driven purely by acoustic speech."></textarea>
+          <textarea id="script-text" placeholder="Type or paste your video script here...&#10;Example: Hello! Welcome to HeyGen Local Studio. Today, we are creating photorealistic video avatars with real-time lip-sync, micro-expressions, and natural hand gestures driven purely by acoustic speech."></textarea>
         </div>
 
         <div class="controls-grid">
@@ -140,37 +140,39 @@
       <section class="panel preview-panel">
         <!-- Video Player Window -->
         <div class="player-wrapper">
-          <div id="player-placeholder" class="player-placeholder">
+          <div id="player-placeholder" class="player-placeholder" style="display:none;">
             <div class="placeholder-icon">
               <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="20" height="20" rx="4"/><polygon points="10 8 16 12 10 16 10 8"/></svg>
             </div>
             <h3>Video Output Preview</h3>
             <p>Select your avatar and background below, enter your script, and click Generate.</p>
           </div>
-          <video id="output-video" controls playsinline style="display:none;"></video>
+          <video id="output-video" controls playsinline src="./static/assets/demo.mp4"></video>
+          <!-- Live Interactive Canvas Simulator -->
+          <canvas id="live-avatar-canvas" width="1280" height="720" style="display:none; width: 100%; height: 100%; object-fit: contain;"></canvas>
         </div>
 
         <!-- Telemetry & Download Bar -->
-        <div id="telemetry-bar" class="telemetry-bar" style="display:none;">
+        <div id="telemetry-bar" class="telemetry-bar">
           <div class="telemetry-item">
             <span class="lbl">Duration</span>
-            <span id="tel-duration" class="val">0s</span>
+            <span id="tel-duration" class="val">6.5s</span>
           </div>
           <div class="telemetry-item">
             <span class="lbl">Frames</span>
-            <span id="tel-frames" class="val">0</span>
+            <span id="tel-frames" class="val">195</span>
           </div>
           <div class="telemetry-item">
-            <span class="lbl">Generation Time</span>
-            <span id="tel-time" class="val">0s</span>
+            <span class="lbl">Render Time</span>
+            <span id="tel-time" class="val">8.9s</span>
           </div>
           <div class="telemetry-item">
-            <span class="lbl">Stress Beats</span>
-            <span id="tel-stress" class="val">0</span>
+            <span class="lbl">FPS</span>
+            <span id="tel-stress" class="val">30.0</span>
           </div>
-          <a id="btn-download" class="download-btn" href="#" download>
+          <a id="btn-download" class="download-btn" href="./static/assets/demo.mp4" download="heygen_avatar_video.mp4">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-            Download MP4
+            Download Demo MP4
           </a>
         </div>
 
@@ -243,6 +245,6 @@
     </div>
   </div>
 
-  <script src="/static/js/app.js"></script>
+  <script src="./static/js/app.js"></script>
 </body>
 </html>
