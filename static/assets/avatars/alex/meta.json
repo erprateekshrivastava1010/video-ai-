@@ -1,0 +1,39 @@
+{
+  "id": "alex",
+  "name": "Alex (Tech Presenter)",
+  "gender": "male",
+  "landmarks": {
+    "face_center": [
+      360,
+      345
+    ],
+    "left_eye": [
+      310,
+      320
+    ],
+    "right_eye": [
+      410,
+      320
+    ],
+    "left_eyebrow": [
+      310,
+      295
+    ],
+    "right_eyebrow": [
+      410,
+      295
+    ],
+    "nose": [
+      360,
+      380
+    ],
+    "mouth": [
+      360,
+      430
+    ],
+    "mouth_width": 56,
+    "mouth_height": 20,
+    "eye_width": 40,
+    "eye_height": 22
+  }
+}

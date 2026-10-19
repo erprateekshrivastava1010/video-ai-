@@ -1,0 +1,12 @@
+__pycache__/
+*.py[cod]
+*$py.class
+*.tmp
+output/*.mp4
+output/*.wav
+output/*.mp3
+.vscode/
+.idea/
+.venv/
+env/
+venv/
